@@ -1,0 +1,20 @@
+{
+  "name": "archetype",
+  "version": "0.0.1",
+  "description": "Archetype for my projects",
+  "main": "index.js",
+  "moduleType": [],
+  "authors": [
+    "thomas.lemercier.pro@gmail.com"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
