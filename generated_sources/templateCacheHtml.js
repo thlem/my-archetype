@@ -1,0 +1,1 @@
+angular.module("templates").run(["$templateCache", function($templateCache) {$templateCache.put("myModule/my.html","<div>My Module template</div>");}]);
