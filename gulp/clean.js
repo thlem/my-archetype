@@ -9,9 +9,7 @@
 
   gulp.task('clean', function () {
 
-    del(conf.paths.generatedSources).then(function (paths) {
-      console.log('Deleted files/folders:\n', paths.join('\n'));
-    });
+    return del(conf.paths.generatedSources);
 
 
   });

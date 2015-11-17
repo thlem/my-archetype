@@ -1,26 +1,26 @@
-  'use strict';
+'use strict';
 
-  var gulp = require('gulp');
-  var path = require('path');
-  var $ = require('gulp-load-plugins')();
+var gulp = require('gulp');
+var path = require('path');
+var $ = require('gulp-load-plugins')();
 
-  var conf = require('./conf');
+var conf = require('./conf');
 
-  gulp.task('csshint', function () {
+gulp.task('csshint', function () {
 
-    var customReporter = function (file) {
+  var customReporter = function (file) {
 
-      $.util.log($.util.colors.cyan(file.csslint.errorCount) + ' errors in ' + $.util.colors.magenta(file.path));
+    $.util.log($.util.colors.cyan(file.csslint.errorCount) + ' errors in ' + $.util.colors.magenta(file.path));
 
-      file.csslint.results.forEach(function (result) {
-        $.util.log(result.error.message + ' on line ' + result.error.line);
-      });
+    file.csslint.results.forEach(function (result) {
+      $.util.log(result.error.message + ' on line ' + result.error.line);
+    });
 
-    };
+  };
 
-    return gulp.src(path.join(conf.paths.app, '**/*.css'))
-      .pipe($.csslint())
-      .pipe($.csslint.reporter(customReporter))
-      .pipe($.size());
+  return gulp.src(path.join(conf.paths.app, '**/*.css'))
+    .pipe($.csslint())
+    .pipe($.csslint.reporter(customReporter))
+    .pipe($.size());
 
-  });
+});

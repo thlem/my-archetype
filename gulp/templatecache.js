@@ -13,6 +13,4 @@
       .pipe(gulp.dest(conf.paths.generatedSources))
       .pipe($.size());
 
-
-
   });
