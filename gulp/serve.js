@@ -1,17 +1,45 @@
-'use strict';
-
-var path = require('path');
+/***************
+ * PLUGINS
+ ****************/
 var gulp = require('gulp');
-var conf = require('./conf');
+var $ = require('gulp-load-plugins')({
+  pattern: [
+    'browser-sync',
+    'util'
+  ]
+});
 
-var browserSync = require('browser-sync');
+/***************
+ * CONF FILE
+ ****************/
+var conf = require('./conf.js').PATHS;
 
-var util = require('util');
+/***************
+ * TASK
+ ****************/
+gulp.task('serve', ['watch'], function () {
+  browserSyncInit([conf.BUILD, conf.SRC]);
+});
 
+/***************
+ * OTHER METHOD
+ ****************/
+
+/**
+ *
+ * @param {type} baseDir
+ * @param {type} port
+ * @param {type} browser
+ */
 function browserSyncInit(baseDir, port, browser) {
   browser = browser === undefined ? 'default' : browser;
 
   var routes = null;
+  if (baseDir === conf.SRC || ($.util.isArray(baseDir) && baseDir.indexOf(conf.SRC) !== -1)) {
+    routes = {
+      '/bower_components': conf.BOWER_COMPONENT
+    };
+  }
 
   var server = {
     baseDir: baseDir,
@@ -31,7 +59,7 @@ function browserSyncInit(baseDir, port, browser) {
    */
   // server.middleware = proxyMiddleware('/users', {target: 'http://jsonplaceholder.typicode.com', proxyHost: 'jsonplaceholder.typicode.com'});
 
-  browserSync.instance = browserSync.init({
+  $.browserSync.instance = $.browserSync.init({
     startPath: '#/',
     server: server,
     browser: browser,
@@ -41,7 +69,3 @@ function browserSyncInit(baseDir, port, browser) {
     }
   });
 }
-
-gulp.task('serve', ['watch'], function () {
-  browserSyncInit([conf.paths.generatedSources, 'null']);
-});

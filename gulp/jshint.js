@@ -1,16 +1,24 @@
-  'use strict';
+/***************
+ * PLUGINS
+ ****************/
+var gulp = require('gulp');
+var $ = require('gulp-load-plugins')({
+  pattern: [
+    'gulp-jshint',
+    'path'
+  ]
+});
 
-  var gulp = require('gulp');
-  var path = require('path');
-  var $ = require('gulp-load-plugins')();
+/***************
+ * CONF FILE
+ ****************/
+var conf = require('./conf.js').PATHS;
 
-  var conf = require('./conf');
-
-  gulp.task('jshint', function () {
-
-    return gulp.src(path.join(conf.paths.app, '**/*.js'))
-      .pipe($.jshint())
-      .pipe($.jshint.reporter('jshint-stylish'))
-      .pipe($.size());
-
-  });
+/***************
+ * TASK
+ ****************/
+gulp.task('jshint', function () {
+  return gulp.src($.path.join(conf.APP, '**/*.js'))
+    .pipe($.jshint())
+    .pipe($.jshint.reporter('jshint-stylish'));
+});

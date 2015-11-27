@@ -1,15 +1,21 @@
-  'use strict';
+/***************
+ * PLUGINS
+ ****************/
+var gulp = require('gulp');
+var $ = require('gulp-load-plugins')({
+  pattern: [
+    'del'
+  ]
+});
 
-  var gulp = require('gulp');
-  var path = require('path');
-  var del = require('del');
-  var $ = require('gulp-load-plugins')();
+/***************
+ * CONF FILE
+ ****************/
+var conf = require('./conf.js').PATHS;
 
-  var conf = require('./conf');
-
-  gulp.task('clean', function () {
-
-    return del(conf.paths.generatedSources);
-
-
-  });
+/***************
+ * TASK
+ ****************/
+gulp.task('clean', function (done) {
+  $.del([conf.SERVE, conf.BUILD], done);
+});

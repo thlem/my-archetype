@@ -1,28 +1,36 @@
-'use strict';
-
+/***************
+ * PLUGINS
+ ****************/
 var gulp = require('gulp');
-var path = require('path');
-var del = require('del');
-var $ = require('gulp-load-plugins')();
-var browserSync = require('browser-sync');
+var $ = require('gulp-load-plugins')({
+  pattern: [
+    'browser-sync',
+    'path'
+  ]
+});
 
-var conf = require('./conf');
+/***************
+ * CONF FILE
+ ****************/
+var conf = require('./conf.js').PATHS;
 
-gulp.task('watch', ['build'], function () {
+/***************
+ * TASK
+ ****************/
+gulp.task('watch', ['build:dev'], function () {
 
-  gulp.watch([path.join(conf.paths.app, '**/*.css')], function (event) {
-    gulp.start('styles');
-    browserSync.reload(event.path);
+  //gulp.watch([$.path.join(conf.SRC, '/*.html'), 'bower.json'], ['build:dev']);
+
+  gulp.watch(conf.APP_STYLES, function (event) {
+    $.browserSync.reload(event.path);
   });
 
-  gulp.watch(path.join(conf.paths.app, '**/*.js'), function (event) {
-    gulp.start('scripts');
-    browserSync.reload(event.path);
+  gulp.watch(conf.APP_SCRIPTS, function (event) {
+    $.browserSync.reload(event.path);
   });
 
-  gulp.watch(path.join(conf.paths.app, '**/*.html'), function (event) {
-    gulp.start('partials');
-    browserSync.reload(event.path);
+  gulp.watch([$.path.join(conf.APP, '**/*.html')], function (event) {
+    $.browserSync.reload(event.path);
   });
 
 });
