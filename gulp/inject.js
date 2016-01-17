@@ -1,60 +1,53 @@
+'use strict';
+
 /***************
  * PLUGINS
  ****************/
 var gulp = require('gulp');
+var wiredep = require('wiredep').stream;
 var $ = require('gulp-load-plugins')({
   pattern: [
     'gulp-inject',
-    'browser-sync',
     'path'
   ]
 });
-var wiredep = require('wiredep').stream
 
 /***************
- * CONF FILE
+ * CONFIG FILE
  ****************/
-var conf = require('./conf.js').PATHS;
+var config = require('./config.js');
 
-/***************
- * TASK
- ****************/
-gulp.task('inject', function () {
+/**************************************
+*********** ENVIRONMENT : DEV *********
+***************************************/
 
-  var partialsInjectFile = gulp.src($.path.join(conf.BUILD, 'partials/templateCacheHtml.js'), {
-    read: false
-  });
-  var partialsInjectOptions = {
-    starttag: '<!-- inject:partials -->',
-    ignorePath: conf.BUILD,
-    addRootSlash: false
-  };
+/**
+ * Task : inject:dev
+ * Description: The task that takes the generated_sources files and inject all of these files in
+ *              the index.html. It inject the bower files too.
+ */
+gulp.task('inject:dev', ['generate-sources:dev'], function(){
 
-  var injectStyles = gulp.src([
-    $.path.join(conf.SRC, 'common.css'),
-    $.path.join(conf.APP, '**/*.css')
-  ], {
-    read: false
-  });
+    var injectStyles = gulp.src([
+        $.path.join(config.FOLDERS.GENERATED_STYLES, 'app.css'),
+    ], {
+        read: false
+    });
 
-  var injectScripts = gulp.src([
-    $.path.join(conf.APP, '/**/*.module.js'),
-    $.path.join(conf.APP, '/**/*.js')
-  ]);
+    var injectScripts = gulp.src([
+        $.path.join(config.FOLDERS.GENERATED_SCRIPTS, 'app.js')
+    ]);
 
-  var injectOptions = {
-    ignorePath: conf.SRC,
-    addRootSlash: false
-  };
 
-  return gulp.src($.path.join(conf.SRC, 'index.html'))
-    .pipe($.inject(partialsInjectFile, partialsInjectOptions))
-    .pipe($.inject(injectStyles, injectOptions))
-    .pipe($.inject(injectScripts, injectOptions))
-    .pipe(wiredep({directory: 'bower_components'}))
-    .pipe(gulp.dest($.path.join(conf.BUILD, '/')))
-    .pipe($.browserSync.reload({
-      stream: true
-    }));
+    var injectOptions = {
+        ignorePath: [config.FOLDERS.GENERATED_SOURCES],
+        addRootSlash: false
+    };
+
+    return gulp.src($.path.join(config.FOLDERS.SRC, 'index.html'))
+        .pipe($.inject(injectStyles, injectOptions))
+        .pipe($.inject(injectScripts, injectOptions))
+        .pipe(wiredep({directory: 'bower_components'}))
+        .pipe(gulp.dest(config.FOLDERS.GENERATED_SOURCES));
 
 });

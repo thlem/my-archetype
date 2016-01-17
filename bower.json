@@ -1,14 +1,14 @@
 {
-  "name": "mypersonal",
-  "description": "My personal website",
-  "main": "index.html",
+  "name": "new",
+  "version": "0.0.0",
+  "homepage": "https://github.com/thlem/my",
   "authors": [
-    "thomas.lemercier.pro@gmail.com"
+    "Thomas Lemercier"
   ],
-  "license": "ISC",
+  "description": "",
+  "main": "",
   "moduleType": [],
-  "homepage": "",
-  "private": true,
+  "license": "MIT",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -17,8 +17,6 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "~1.4.8",
-    "angular-ui-router": "ui-router#~0.2.15",
-    "angular-material": "~0.11.4"
+    "angular": "~1.4.8"
   }
 }

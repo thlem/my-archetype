@@ -1,7 +1,10 @@
+'use strict';
+
 /***************
  * PLUGINS
  ****************/
 var gulp = require('gulp');
+var runSequence = require('run-sequence').use(gulp);
 var $ = require('gulp-load-plugins')({
   pattern: [
     'browser-sync',
@@ -10,15 +13,32 @@ var $ = require('gulp-load-plugins')({
 });
 
 /***************
- * CONF FILE
+ * CONFIG FILE
  ****************/
-var conf = require('./conf.js').PATHS;
+var config = require('./config.js');
 
-/***************
- * TASK
- ****************/
-gulp.task('serve', ['watch'], function () {
-  browserSyncInit([conf.BUILD, conf.SRC]);
+/**
+ * Task : serve
+ * Description: The task that run the server and serve app on localhost
+ *              Before start, the task watch is run.
+ */
+gulp.task('serve', function () {
+
+  runSequence(
+    'watch',
+    function () {
+      browserSyncInit([config.FOLDERS.GENERATED_SOURCES]);
+    }
+  );
+
+});
+
+/**
+ * Task : serve:reload
+ * Description: The task that reload the server and serve again app on localhost
+ */
+gulp.task('serve:reload', function () {
+  $.browserSync.reload();
 });
 
 /***************
@@ -26,18 +46,15 @@ gulp.task('serve', ['watch'], function () {
  ****************/
 
 /**
- *
- * @param {type} baseDir
- * @param {type} port
- * @param {type} browser
+ * The configuration of the runing server
  */
 function browserSyncInit(baseDir, port, browser) {
   browser = browser === undefined ? 'default' : browser;
 
   var routes = null;
-  if (baseDir === conf.SRC || ($.util.isArray(baseDir) && baseDir.indexOf(conf.SRC) !== -1)) {
+  if (baseDir === config.FOLDERS.GENERATED_SOURCES || ($.util.isArray(baseDir) && baseDir.indexOf(config.FOLDERS.GENERATED_SOURCES) !== -1)) {
     routes = {
-      '/bower_components': conf.BOWER_COMPONENT
+      '/bower_components': './bower_components'
     };
   }
 

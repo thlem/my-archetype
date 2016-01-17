@@ -1,7 +1,10 @@
+'use strict';
+
 /***************
  * PLUGINS
  ****************/
 var gulp = require('gulp');
+var runSequence = require('run-sequence').use(gulp);
 var $ = require('gulp-load-plugins')({
   pattern: [
     'browser-sync',
@@ -10,27 +13,26 @@ var $ = require('gulp-load-plugins')({
 });
 
 /***************
- * CONF FILE
+ * CONFIG FILE
  ****************/
-var conf = require('./conf.js').PATHS;
+var config = require('./config.js');
 
-/***************
- * TASK
- ****************/
-gulp.task('watch', ['build:dev'], function () {
+/**
+ * Task : watch
+ * Description: The task that run the watcher that watch changes of given files.
+ *              On changes, regenerate generated_sources, and then reload the server.
+ */
+gulp.task('watch', ['inject:dev'], function(){
 
-  //gulp.watch([$.path.join(conf.SRC, '/*.html'), 'bower.json'], ['build:dev']);
+    gulp.watch([
+        config.FILTERS.SCRIPTS.DEV,
+        config.FILTERS.STYLES.CSS.DEV,
+        $.path.join(config.FOLDERS.SRC, '**/*.html'),
+        'bower.json'
+        ], function(event) {
+      
+      runSequence('inject:dev', 'serve:reload');
 
-  gulp.watch(conf.APP_STYLES, function (event) {
-    $.browserSync.reload(event.path);
-  });
-
-  gulp.watch(conf.APP_SCRIPTS, function (event) {
-    $.browserSync.reload(event.path);
-  });
-
-  gulp.watch([$.path.join(conf.APP, '**/*.html')], function (event) {
-    $.browserSync.reload(event.path);
-  });
+    });
 
 });
