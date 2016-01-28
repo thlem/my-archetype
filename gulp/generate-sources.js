@@ -30,7 +30,6 @@ var config = require('./config.js');
  */
 gulp.task('generate-sources:dev', function(callback){
     runSequence(
-        'clean:generated-sources', // Clean the directory
         'generate-templatecache:dev', // Take all html files and generate it in a JS angular file
         'generate-scripts:dev', // Generate JS app file
         'generate-styles:dev', // Generate CSS app file
